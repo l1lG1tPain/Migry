@@ -141,12 +141,14 @@ body::after {
   border-bottom: 1px solid var(--glass-border);
 }
 .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 480px; margin: 0 auto; }
-.logo { display: flex; align-items: center; gap: 8px; }
-.logo-icon { font-size: 22px; }
+.logo { display: flex; align-items: center; gap: 8px;  }
+.logo-icon { height: 44px; width: auto; }
 .logo-text {
   font-size: 20px; font-weight: 800; letter-spacing: -.5px;
-  background: var(--accent-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background: var(--accent-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.6))
+          drop-shadow(0 0 20px rgba(244, 114, 182, 0.3));
 }
+.icon-sheet { width: 30px; height: 30px; }
 .header-actions { display: flex; gap: 8px; }
 
 /* ─── Icon buttons ─────────────────────────────────────────────────── */
@@ -239,7 +241,7 @@ body::after {
 }
 .cal-cell.has-attack { color: var(--text-primary); }
 .cal-dot {
-  width: 5px; height: 5px; border-radius: 50%;
+  width: 10px; height: 10px; border-radius: 50%;
   background: var(--attack-color, #f87171);
   margin-top: 2px;
 }
@@ -406,7 +408,9 @@ body::after {
   opacity: 0; pointer-events: none;
   transition: opacity var(--dur) var(--ease);
 }
-.sheet-overlay.open { opacity: 1; pointer-events: all; }
+.sheet-overlay.open { opacity: 1; pointer-events: all; background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);}
 
 .bottom-sheet {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 301;
@@ -445,7 +449,7 @@ body::after {
   z-index: 10;
   display: flex; flex-direction: column; gap: 2px;
 }
-.sheet-title    { font-size: 20px; font-weight: 800; }
+.sheet-title    { font-size: 20px; font-weight: 800; align-items: center; display: flex; gap: 5px; }
 .sheet-subtitle { font-size: 13px; color: var(--text-secondary); }
 .close-btn {
   position: absolute; top: 14px; right: 0;

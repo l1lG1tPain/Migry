@@ -713,6 +713,33 @@ function setupListeners() {
   }, { passive: true });
 }
 
+// ── Easter egg — 5 тапов по логотипу ─────────────────────────────────
+const EGG_MSGS = [
+  '🧠 Мозги с утра мне не ебите',
+  '😤 Сначала кофе, потом мигрень',
+  '💀 Тихо. Тихо. ТИХО.',
+  '🫠 Голова не казённая',
+  '🌡️ Температура терпения: критическая',
+  '😶‍🌫️ Нейроны в отпуске',
+  '🔇 Уменьши яркость. И голос тоже.',
+  '🛑 Мозг временно недоступен',
+  '💊 Это не баг, это мигрень',
+  '🌑 Выключи всё. Вообще всё.',
+  '😮‍💨 Думать будем после',
+  '🧊 Только холодное и темнота',
+];
+
+let eggTaps = 0, eggTimer;
+document.querySelector('.logo').addEventListener('click', () => {
+  eggTaps++;
+  clearTimeout(eggTimer);
+  eggTimer = setTimeout(() => { eggTaps = 0; }, 1500);
+  if (eggTaps >= 5) {
+    eggTaps = 0;
+    showToast(EGG_MSGS[Math.floor(Math.random() * EGG_MSGS.length)]);
+  }
+});
+
 // ─── SW ───────────────────────────────────────────────────────────────────────
 function registerSW() {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(console.error);
