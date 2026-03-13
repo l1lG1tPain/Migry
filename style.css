@@ -653,3 +653,86 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert
   .detail-modal { left: 50%; right: auto; width: calc(480px - 32px); transform: translateX(-50%) scale(.9); }
   .detail-modal.open { transform: translateX(-50%) scale(1); }
 }
+
+/* ─── Time chips ────────────────────────────────────────────────────── */
+.time-chips {
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+.time-chip {
+  padding: 7px 13px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  font-family: var(--font-main); font-size: 12.5px; font-weight: 600;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.time-chip:hover { border-color: var(--accent-1); color: var(--accent-1); }
+.time-chip.active {
+  background: rgba(167,139,250,.18);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.time-chip-result {
+  margin-top: 8px;
+  font-size: 12px; color: var(--accent-1); font-weight: 600;
+  padding: 7px 12px;
+  background: rgba(167,139,250,.1);
+  border: 1px solid rgba(167,139,250,.2);
+  border-radius: 10px;
+}
+
+/* ─── Medication rows ───────────────────────────────────────────────── */
+.med-cols-header {
+  display: grid; grid-template-columns: 2fr 1.2fr 1fr;
+  gap: 6px; margin-bottom: 5px;
+  padding: 0 2px;
+}
+.med-cols-header span {
+  font-size: 10px; font-weight: 600;
+  color: var(--text-dim); text-transform: uppercase; letter-spacing: .4px;
+}
+.med-row-item {
+  display: grid; grid-template-columns: 2fr 1.2fr 1fr auto;
+  gap: 6px; align-items: center;
+  margin-bottom: 7px;
+}
+.med-inp { padding: 9px 10px; font-size: 13px; }
+.med-remove-btn {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: 8px; cursor: pointer;
+  color: var(--text-dim); font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur) var(--ease);
+}
+.med-remove-btn:hover { background: rgba(248,113,113,.15); border-color: var(--c-danger); color: var(--c-danger); }
+
+.add-med-btn {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 4px; padding: 8px 14px;
+  border: 1.5px dashed var(--glass-border);
+  background: transparent; border-radius: 12px;
+  color: var(--text-secondary); font-family: var(--font-main);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.add-med-btn:hover { border-color: var(--accent-1); color: var(--accent-1); }
+
+/* ─── Modal add-entry button ────────────────────────────────────────── */
+.modal-add-entry-btn {
+  width: 100%; margin-top: 16px; padding: 13px;
+  background: var(--accent-grad);
+  border: none; border-radius: 14px;
+  color: #fff; font-family: var(--font-main);
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+  box-shadow: 0 4px 20px rgba(124,58,237,.3);
+  transition: all var(--dur) var(--ease);
+}
+.modal-add-entry-btn:hover { transform: scale(1.02); }
+
+/* ─── Date input ────────────────────────────────────────────────────── */
+input[type="date"] { cursor: pointer; }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(.5); cursor: pointer; }

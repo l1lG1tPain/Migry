@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0a0a1e" id="themeColorMeta">
+  <meta name="theme-color" content="#0a0a1e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Мигри">
-  <meta name="description" content="Персональный трекер мигрени и головных болей">
   <title>Мигри — трекер головной боли</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +16,6 @@
 </head>
 <body>
 
-  <!-- ── Header ─────────────────────────────────────────────────────────── -->
   <header class="app-header">
     <div class="header-content">
       <div class="logo">
@@ -25,8 +23,7 @@
         <span class="logo-text">Мигри</span>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" id="themeToggle" title="Сменить тему" aria-label="Сменить тему">
-          <!-- sun (show in dark mode) -->
+        <button class="icon-btn" id="themeToggle" aria-label="Сменить тему">
           <svg class="icon-sun" viewBox="0 0 24 24" style="display:block">
             <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
             <line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -38,7 +35,6 @@
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <!-- moon (show in light mode) -->
           <svg class="icon-moon" viewBox="0 0 24 24" style="display:none">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" fill="none"/>
           </svg>
@@ -47,16 +43,14 @@
     </div>
   </header>
 
-  <!-- ── Main ───────────────────────────────────────────────────────────── -->
   <main class="main-content">
 
-    <!-- Demo banner (hidden after demo load) -->
     <div class="demo-banner" id="demoBanner">
       <span>Нет данных? Загрузи тестовые записи за 30 дней.</span>
       <button class="demo-btn" id="demoBtn">Загрузить</button>
     </div>
 
-    <!-- Calendar -->
+    <!-- Календарь -->
     <section class="section">
       <div class="glass-card">
         <div class="calendar-header">
@@ -80,7 +74,7 @@
       </div>
     </section>
 
-    <!-- Stats bar -->
+    <!-- Стат-плашки -->
     <section class="section">
       <div class="stats-bar">
         <div class="stat-pill">
@@ -98,20 +92,17 @@
       </div>
     </section>
 
-    <!-- Last Attack -->
+    <!-- Последний приступ -->
     <section class="section">
       <div class="section-header">
         <h3 class="section-title">Последний приступ</h3>
       </div>
       <div class="glass-card last-attack-card" id="lastAttackCard">
-        <div class="empty-state">
-          <span class="empty-icon">✨</span>
-          <p>Нет записей — нажми «Записать приступ»!</p>
-        </div>
+        <div class="empty-state"><span class="empty-icon">✨</span><p>Нет записей — нажми «Записать приступ»!</p></div>
       </div>
     </section>
 
-    <!-- This Week -->
+    <!-- Эта неделя -->
     <section class="section">
       <div class="section-header">
         <h3 class="section-title">Эта неделя</h3>
@@ -121,37 +112,33 @@
       </div>
     </section>
 
-    <!-- Time of Day -->
+    <!-- Время суток -->
     <section class="section">
       <div class="section-header">
         <h3 class="section-title">Время суток</h3>
       </div>
       <div class="glass-card">
         <div class="tod-chart" id="todChart">
-          <!-- Placeholder bars -->
           <div class="tod-bar-wrap"><span class="tod-count" style="color:var(--text-dim)">—</span><div class="tod-bar-track"><div class="tod-bar-fill" style="height:0%"></div></div><span class="tod-label">🌅</span><span class="tod-label">Утро</span></div>
           <div class="tod-bar-wrap"><span class="tod-count" style="color:var(--text-dim)">—</span><div class="tod-bar-track"><div class="tod-bar-fill" style="height:0%"></div></div><span class="tod-label">☀️</span><span class="tod-label">День</span></div>
           <div class="tod-bar-wrap"><span class="tod-count" style="color:var(--text-dim)">—</span><div class="tod-bar-track"><div class="tod-bar-fill" style="height:0%"></div></div><span class="tod-label">🌆</span><span class="tod-label">Вечер</span></div>
           <div class="tod-bar-wrap"><span class="tod-count" style="color:var(--text-dim)">—</span><div class="tod-bar-track"><div class="tod-bar-fill" style="height:0%"></div></div><span class="tod-label">🌙</span><span class="tod-label">Ночь</span></div>
         </div>
+        <p class="tod-insight" id="todInsight">Запишите несколько приступов, чтобы увидеть паттерн</p>
       </div>
     </section>
-    <p class="tod-insight" id="todInsight">Запишите несколько приступов, чтобы увидеть паттерн</p>
 
-    <!-- Medication Effectiveness -->
+    <!-- Эффективность лекарств -->
     <section class="section">
       <div class="section-header">
         <h3 class="section-title">Эффективность лекарств</h3>
       </div>
       <div class="glass-card" id="medicationCard">
-        <div class="empty-state">
-          <span class="empty-icon">💊</span>
-          <p>Добавьте данные о лекарствах при записи приступа</p>
-        </div>
+        <div class="empty-state"><span class="empty-icon">💊</span><p>Добавьте данные о лекарствах при записи приступа</p></div>
       </div>
     </section>
 
-    <!-- Insights -->
+    <!-- Инсайты -->
     <section class="section">
       <div class="section-header">
         <h3 class="section-title">Инсайты Мигри</h3>
@@ -160,55 +147,67 @@
         <div class="glass-card insight-placeholder">
           <span class="insight-icon">🔮</span>
           <p>Инсайты появятся после 7 дней записей</p>
-          <div class="progress-track"><div class="progress-bar" id="insightProgress" style="width:0%"></div></div>
+          <div class="progress-track"><div class="progress-bar" style="width:0%"></div></div>
           <span class="progress-label">0/7 дней</span>
         </div>
       </div>
     </section>
 
-    <!-- Spacer for FAB -->
     <div style="height:80px"></div>
   </main>
 
-  <!-- ── Floating Action Button ──────────────────────────────────────────── -->
+  <!-- FAB -->
   <button class="fab" id="fabBtn" aria-label="Записать приступ">
-    <svg viewBox="0 0 24 24" class="fab-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
+    <svg viewBox="0 0 24 24" class="fab-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
     <span>Записать приступ</span>
   </button>
 
-  <!-- ── Bottom Sheet overlay ────────────────────────────────────────────── -->
-  <div class="sheet-overlay" id="sheetOverlay" role="presentation"></div>
+  <!-- Overlay -->
+  <div class="sheet-overlay" id="sheetOverlay"></div>
 
-  <!-- ── Bottom Sheet ────────────────────────────────────────────────────── -->
-  <div class="bottom-sheet" id="bottomSheet" role="dialog" aria-modal="true" aria-label="Запись приступа">
-    <div class="sheet-handle" aria-hidden="true"></div>
+  <!-- Bottom Sheet -->
+  <div class="bottom-sheet" id="bottomSheet" role="dialog" aria-modal="true">
+    <div class="sheet-handle"></div>
     <div class="sheet-content">
       <div class="sheet-header">
         <h2 class="sheet-title">Поделись с Мигри 🧠</h2>
-        <p class="sheet-subtitle">Расскажи о своём приступе — это займёт 1 минуту</p>
+        <p class="sheet-subtitle">Расскажи о приступе — я помогу собрать данные для врача</p>
         <button class="close-btn" id="closeSheet" aria-label="Закрыть">✕</button>
       </div>
 
       <form class="attack-form" id="attackForm" novalidate>
 
-        <!-- 1. Time -->
+        <!-- 1. Дата и время -->
         <div class="form-section">
-          <label class="form-section-label">⏱ Когда начался?</label>
+          <label class="form-section-label">📅 Дата и время</label>
+
           <div class="form-row">
             <div class="form-field">
-              <label class="field-label" for="startTime">Начало</label>
-              <input type="datetime-local" id="startTime" class="glass-input" required>
+              <label class="field-label" for="startDate">Начало боли</label>
+              <input type="date" id="startDate" class="glass-input" required>
             </div>
             <div class="form-field">
-              <label class="field-label" for="endTime">Конец (если прошёл)</label>
-              <input type="datetime-local" id="endTime" class="glass-input">
+              <label class="field-label" for="endDate">Конец боли</label>
+              <input type="date" id="endDate" class="glass-input" placeholder="если прошла">
             </div>
+          </div>
+
+          <div class="field-label" style="margin-top:12px;margin-bottom:7px">Примерное время начала</div>
+          <div class="time-chips" id="timeChips">
+            <button type="button" class="time-chip" data-chip="morning">🌅 Утром</button>
+            <button type="button" class="time-chip" data-chip="afternoon">☀️ Днём</button>
+            <button type="button" class="time-chip" data-chip="evening">🌆 Вечером</button>
+            <button type="button" class="time-chip" data-chip="night">🌙 Ночью</button>
+            <button type="button" class="time-chip" data-chip="ago1">⏱ 1–2 ч назад</button>
+            <button type="button" class="time-chip" data-chip="ago3">⏱ 3–4 ч назад</button>
+            <button type="button" class="time-chip" data-chip="ago5">⏱ 5+ ч назад</button>
+          </div>
+          <div class="time-chip-result" id="timeChipResult" style="display:none">
+            ≈ <span id="timeChipComputed"></span>
           </div>
         </div>
 
-        <!-- 2. Intensity -->
+        <!-- 2. Интенсивность -->
         <div class="form-section">
           <label class="form-section-label">💫 Насколько сильно болит?</label>
           <div class="intensity-container">
@@ -216,20 +215,17 @@
               <span class="intensity-value" id="intensityValue">5</span>
               <span class="intensity-emoji" id="intensityEmoji">😐</span>
             </div>
-            <input type="range" id="intensitySlider" min="1" max="10" value="5" class="intensity-slider" aria-label="Интенсивность боли">
-            <div class="intensity-labels">
-              <span>1 — слабая</span>
-              <span>10 — невыносимая</span>
-            </div>
+            <input type="range" id="intensitySlider" min="1" max="10" value="5" class="intensity-slider">
+            <div class="intensity-labels"><span>1 — слабая</span><span>10 — невыносимая</span></div>
           </div>
-          <div class="pill-group" style="margin-top:6px">
+          <div class="pill-group" style="margin-top:8px">
             <button type="button" class="pill" data-group="painType" data-value="throbbing">🌊 Пульсирующая</button>
             <button type="button" class="pill" data-group="painType" data-value="pressing">🪨 Давящая</button>
             <button type="button" class="pill" data-group="painType" data-value="sharp">⚡ Острая</button>
           </div>
         </div>
 
-        <!-- 3. Location -->
+        <!-- 3. Локализация -->
         <div class="form-section">
           <label class="form-section-label">📍 Где болит?</label>
           <div class="pill-group">
@@ -245,7 +241,7 @@
           </div>
         </div>
 
-        <!-- 4. Symptoms -->
+        <!-- 4. Симптомы -->
         <div class="form-section">
           <label class="form-section-label">😣 Симптомы</label>
           <div class="checkbox-grid">
@@ -257,50 +253,56 @@
             <label class="check-item"><input type="checkbox" name="symptom" value="dizziness"><span class="check-box"></span><span>💫 Головокружение</span></label>
             <label class="check-item"><input type="checkbox" name="symptom" value="numbness"><span class="check-box"></span><span>🫀 Онемение</span></label>
             <label class="check-item"><input type="checkbox" name="symptom" value="weakness"><span class="check-box"></span><span>😮‍💨 Слабость</span></label>
+            <label class="check-item"><input type="checkbox" name="symptom" value="menstruation"><span class="check-box"></span><span>🩸 Менструация</span></label>
           </div>
         </div>
 
-        <!-- 5. Triggers -->
+        <!-- 5. Триггеры -->
         <div class="form-section">
           <label class="form-section-label">⚡ Что было накануне?</label>
           <div class="checkbox-grid">
             <label class="check-item"><input type="checkbox" name="trigger" value="stress"><span class="check-box"></span><span>😤 Стресс</span></label>
-            <label class="check-item"><input type="checkbox" name="trigger" value="poorSleep"><span class="check-box"></span><span>😴 Плохой сон</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="lessSleep"><span class="check-box"></span><span>😴 Мало сна</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="moreSleep"><span class="check-box"></span><span>🛌 Много сна</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="hunger"><span class="check-box"></span><span>🍽 Пропуск еды</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="weather"><span class="check-box"></span><span>🌦 Погода</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="smell"><span class="check-box"></span><span>👃 Сильный запах</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="noise"><span class="check-box"></span><span>🔊 Шум</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="runnyNose"><span class="check-box"></span><span>🤧 Насморк</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="screen"><span class="check-box"></span><span>📱 Много экрана</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="physActivity"><span class="check-box"></span><span>🏃 Физ. нагрузка</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="alcohol"><span class="check-box"></span><span>🍷 Алкоголь</span></label>
             <label class="check-item"><input type="checkbox" name="trigger" value="caffeine"><span class="check-box"></span><span>☕ Кофеин</span></label>
+            <label class="check-item"><input type="checkbox" name="trigger" value="hookah"><span class="check-box"></span><span>💨 Кальян</span></label>
           </div>
         </div>
 
-        <!-- 6. Medication -->
+        <!-- 6. Лекарства -->
         <div class="form-section">
           <label class="form-section-label">💊 Принял лекарство?</label>
-          <div class="form-row">
-            <div class="form-field">
-              <label class="field-label" for="medName">Название</label>
-              <input type="text" id="medName" class="glass-input" placeholder="Ибупрофен">
-            </div>
-            <div class="form-field">
-              <label class="field-label" for="medDose">Доза</label>
-              <input type="text" id="medDose" class="glass-input" placeholder="400мг">
-            </div>
+          <div class="med-cols-header">
+            <span>Название</span>
+            <span>Доза</span>
+            <span>Кол-во</span>
           </div>
-          <div class="form-field" style="margin-top:10px">
+          <div id="medRows"></div>
+          <button type="button" class="add-med-btn" id="addMedBtn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Добавить ещё
+          </button>
+          <div class="form-field" style="margin-top:12px" id="medEffWrap" style="display:none">
             <label class="field-label">Помогло? (1 — нет, 10 — отлично)</label>
-            <div class="intensity-container" style="margin-top:8px">
+            <div class="intensity-container" style="margin-top:6px">
               <div class="intensity-display" style="min-height:unset">
                 <span class="intensity-value" id="medEffValue" style="font-size:24px">5</span>
                 <span style="font-size:13px;color:var(--text-secondary)">/10</span>
               </div>
-              <input type="range" id="medEffSlider" min="1" max="10" value="5" class="intensity-slider med-slider" aria-label="Эффективность лекарства">
+              <input type="range" id="medEffSlider" min="1" max="10" value="5" class="intensity-slider med-slider">
             </div>
           </div>
         </div>
 
-        <!-- 7. Notes -->
+        <!-- 7. Заметки -->
         <div class="form-section">
           <label class="form-section-label" for="attackNotes">📝 Заметки (необязательно)</label>
           <textarea class="glass-input glass-textarea" id="attackNotes" placeholder="Что-то особенное в этот раз…" rows="3"></textarea>
@@ -311,21 +313,20 @@
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>
         </button>
 
-        <p class="disclaimer">⚕️ Мигри — инструмент самонаблюдения, не замена врачу.</p>
+        <p class="disclaimer">📋 Мигри помогает фиксировать симптомы и триггеры — чтобы на приёме у врача была полная картина.</p>
       </form>
     </div>
   </div>
 
-  <!-- ── Day Detail Modal ────────────────────────────────────────────────── -->
-  <div class="modal-overlay" id="modalOverlay" role="presentation"></div>
-  <div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-label="Детали приступа">
+  <!-- Day Modal -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="detail-modal" id="detailModal" role="dialog" aria-modal="true">
     <div class="modal-content" id="modalContent"></div>
   </div>
 
-  <!-- ── Toast ───────────────────────────────────────────────────────────── -->
+  <!-- Toast -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- ── Scripts ─────────────────────────────────────────────────────────── -->
   <script src="db.js"></script>
   <script src="analytics.js"></script>
   <script src="app.js"></script>
