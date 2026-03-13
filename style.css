@@ -71,7 +71,22 @@
 }
 
 /* ─── Reset / Base ─────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Отключаем подсветку при тапе на мобильных */
+  -webkit-tap-highlight-color: transparent;
+  /* Отключаем выделение текста везде */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Разрешаем выделение только в полях ввода */
+input, textarea, [contenteditable] {
+  user-select: text;
+  -webkit-user-select: text;
+}
 
 html { font-size: 16px; scroll-behavior: smooth; }
 
@@ -109,10 +124,12 @@ body::after {
 [data-theme="light"] body::before { opacity: .15; }
 [data-theme="light"] body::after  { opacity: .1; }
 
-/* ─── Scrollbar ────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 4px; }
+/* ─── Scrollbars — полностью скрыты ────────────────────────────────── */
+* {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
+}
+*::-webkit-scrollbar { display: none; } /* Chrome / Safari / WebKit */
 
 /* ─── Header ───────────────────────────────────────────────────────── */
 .app-header {
@@ -306,12 +323,12 @@ body::after {
 .wc-dot.empty   { background: var(--glass-border); }
 
 /* ─── Time-of-day chart ────────────────────────────────────────────── */
-.tod-chart { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; align-items: flex-end; height: 90px; }
+.tod-chart { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; align-items: flex-end; }
 .tod-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; }
 .tod-bar-track { width: 28px; height: 70px; background: var(--glass-border); border-radius: 14px; overflow: hidden; display: flex; align-items: flex-end; }
 .tod-bar-fill  { width: 100%; border-radius: 14px; background: var(--accent-grad); transition: height .8s var(--ease); min-height: 4px; }
 .tod-count { font-size: 13px; font-weight: 700; }
-.tod-label { font-size: 10px; color: var(--text-dim); font-weight: 500; }
+.tod-label { font-size: 10px; font-weight: 500; }
 .tod-insight { margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); text-align: center; }
 
 /* ─── Medication bars ──────────────────────────────────────────────── */
@@ -415,6 +432,10 @@ body::after {
   flex: 1;
   padding: 0 20px 40px;
   -webkit-overflow-scrolling: touch;
+  /* Останавливаем «прокидывание» скролла наружу */
+  overscroll-behavior: contain;
+  /* Говорим браузеру что жест — вертикальный скролл, не свайп */
+  touch-action: pan-y;
 }
 .sheet-header {
   position: sticky; top: 0;

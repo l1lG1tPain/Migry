@@ -665,11 +665,17 @@ function setupListeners() {
   // Form submit
   document.getElementById('attackForm').addEventListener('submit', handleSubmit);
 
-  // Swipe down to close sheet
-  let startY = 0;
-  const sheet = document.getElementById('bottomSheet');
-  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive:true });
-  sheet.addEventListener('touchend',   e => { if (e.changedTouches[0].clientY - startY > 80) closeSheet(); }, { passive:true });
+  // Swipe down — только по ручке (.sheet-handle), скролл контента не закрывает шторку
+  let startY = 0, swipeAllowed = false;
+  const sheetHandle = document.querySelector('.sheet-handle');
+  sheetHandle.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    swipeAllowed = true;
+  }, { passive: true });
+  document.getElementById('bottomSheet').addEventListener('touchend', e => {
+    if (swipeAllowed && e.changedTouches[0].clientY - startY > 60) closeSheet();
+    swipeAllowed = false;
+  }, { passive: true });
 }
 
 // ─── SW ───────────────────────────────────────────────────────────────────────
