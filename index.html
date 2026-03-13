@@ -23,6 +23,14 @@
         <span class="logo-text">Мигри</span>
       </div>
       <div class="header-actions">
+        <!-- Export/share button -->
+        <button class="icon-btn" id="exportBtn" aria-label="Выгрузить отчёт">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+            <polyline points="16 6 12 2 8 6"/>
+            <line x1="12" y1="2" x2="12" y2="15"/>
+          </svg>
+        </button>
         <button class="icon-btn" id="themeToggle" aria-label="Сменить тему">
           <svg class="icon-sun" viewBox="0 0 24 24" style="display:block">
             <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
@@ -46,9 +54,10 @@
   <main class="main-content">
 
     <div class="demo-banner" id="demoBanner">
-      <span>Нет данных? Загрузи тестовые записи за 30 дней.</span>
+      <span>Есть дневник из MigreBot? Импортируй данные из .xlsx</span>
       <button class="demo-btn" id="demoBtn">Загрузить</button>
     </div>
+    <input type="file" id="importFileInput" accept=".xlsx,.xls" style="display:none">
 
     <!-- Календарь -->
     <section class="section">
@@ -222,6 +231,10 @@
             <button type="button" class="pill" data-group="painType" data-value="throbbing">🌊 Пульсирующая</button>
             <button type="button" class="pill" data-group="painType" data-value="pressing">🪨 Давящая</button>
             <button type="button" class="pill" data-group="painType" data-value="sharp">⚡ Острая</button>
+            <button type="button" class="pill" data-group="painType" data-value="aching">😔 Ноющая</button>
+            <button type="button" class="pill" data-group="painType" data-value="bursting">💥 Распирающая</button>
+            <button type="button" class="pill" data-group="painType" data-value="squeezing">🤛 Сжимающая</button>
+            <button type="button" class="pill" data-group="painType" data-value="dull">😶 Тупая</button>
           </div>
         </div>
 
@@ -233,6 +246,9 @@
             <button type="button" class="pill" data-group="location" data-value="forehead">Лоб</button>
             <button type="button" class="pill" data-group="location" data-value="back">Затылок</button>
             <button type="button" class="pill" data-group="location" data-value="full">Вся голова</button>
+            <button type="button" class="pill" data-group="location" data-value="top">Темя</button>
+            <button type="button" class="pill" data-group="location" data-value="eyelids">Веки</button>
+            <button type="button" class="pill" data-group="location" data-value="jaw">Челюсть</button>
           </div>
           <div class="pill-group" style="margin-top:7px">
             <button type="button" class="pill" data-group="side" data-value="left">◁ Слева</button>
@@ -324,11 +340,35 @@
     <div class="modal-content" id="modalContent"></div>
   </div>
 
+  <!-- Export Modal -->
+  <div class="sheet-overlay" id="exportOverlay"></div>
+  <div class="export-modal" id="exportModal" role="dialog" aria-modal="true" aria-label="Отчёт для врача">
+    <div class="sheet-handle"></div>
+    <div class="export-modal-inner">
+      <div class="export-modal-header">
+        <div>
+          <h2 class="sheet-title">Отчёт для врача 📋</h2>
+          <p class="sheet-subtitle">Скопируйте и отправьте врачу</p>
+        </div>
+        <button class="close-btn" id="closeExport" aria-label="Закрыть">✕</button>
+      </div>
+      <textarea class="export-textarea" id="exportText" readonly></textarea>
+      <button class="submit-btn" id="copyReportBtn" style="margin-top:12px">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span>Скопировать в буфер</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="db.js"></script>
   <script src="analytics.js"></script>
+  <script src="import.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

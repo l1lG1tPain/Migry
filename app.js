@@ -102,7 +102,7 @@ function renderCalendar() {
   dow--;
 
   const today = new Date();
-  const todayStr = today.toISOString().slice(0,10);
+  const todayStr = localDateStr(today);
   let html = '';
   for (let i = 0; i < dow; i++) html += '<div class="cal-cell empty"></div>';
 
@@ -200,7 +200,7 @@ function renderWeekCards() {
 
   for (let i = 0; i < 7; i++) {
     const d = new Date(monday); d.setDate(monday.getDate() + i);
-    const dateStr  = d.toISOString().slice(0,10);
+    const dateStr  = localDateStr(d);
     const isToday  = d.getTime() === today.getTime();
     const isFuture = d > today;
     const dayAttacks = allAttacks.filter(a => (a.startTime||a.date||'').startsWith(dateStr));
@@ -368,21 +368,34 @@ function removeMedRow(id) {
 
 function getMedications() {
   const rows = document.querySelectorAll('.med-row-item');
-  const meds = [];
-  const effectiveness = +document.getElementById('medEffSlider').value;
+  const rawMeds = [];
   rows.forEach(row => {
     const name = row.querySelector('[data-field="name"]').value.trim();
     const dose = row.querySelector('[data-field="dose"]').value.trim();
     const qty  = row.querySelector('[data-field="qty"]').value.trim();
-    if (name) meds.push({ name, dose, qty, effectiveness });
+    if (name) rawMeds.push({ name, dose, qty });
   });
-  return meds;
+  if (!rawMeds.length) return [];
+
+  const totalEff   = +document.getElementById('medEffSlider').value;
+  // Divide the effectiveness score equally across all meds in this record
+  const effPerMed  = rawMeds.length > 1 ? +(totalEff / rawMeds.length).toFixed(1) : totalEff;
+
+  return rawMeds.map(m => ({ ...m, effectiveness: effPerMed }));
 }
 
 // ─── Form default / reset ─────────────────────────────────────────────────────
+function localDateStr(dt) {
+  // Returns YYYY-MM-DD in LOCAL timezone (fixes UTC-off-by-one at night)
+  const d = dt || new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function setDefaultDate() {
-  const today = new Date().toISOString().slice(0,10);
-  document.getElementById('startDate').value = today;
+  document.getElementById('startDate').value = localDateStr();
 }
 
 function getCheckedValues(name) {
@@ -493,8 +506,8 @@ function showDayModal(attacks, dateStr, showAddBtn) {
       <div class="modal-detail-row"><span class="modal-detail-key">Время</span><span class="modal-detail-val">${timeStr}</span></div>
       ${dur ? `<div class="modal-detail-row"><span class="modal-detail-key">Длительность</span><span class="modal-detail-val">${dur}</span></div>` : ''}
       <div class="modal-detail-row"><span class="modal-detail-key">Интенсивность</span><span class="modal-detail-val"><span class="la-badge ${intLevel}">${intLabel} · ${a.intensity}/10</span></span></div>
-      ${a.painType ? `<div class="modal-detail-row"><span class="modal-detail-key">Тип боли</span><span class="modal-detail-val">${{throbbing:'🌊 Пульсирующая',pressing:'🪨 Давящая',sharp:'⚡ Острая'}[a.painType]||''}</span></div>` : ''}
-      ${a.location ? `<div class="modal-detail-row"><span class="modal-detail-key">Локализация</span><span class="modal-detail-val">${{temples:'Виски',forehead:'Лоб',back:'Затылок',full:'Вся голова'}[a.location]||''}${a.side?' · '+({left:'слева',right:'справа',both:'с обеих'}[a.side]||''):''}</span></div>` : ''}
+      ${a.painType ? `<div class="modal-detail-row"><span class="modal-detail-key">Тип боли</span><span class="modal-detail-val">${{throbbing:'🌊 Пульсирующая',pressing:'🪨 Давящая',sharp:'⚡ Острая',aching:'😔 Ноющая',bursting:'💥 Распирающая',squeezing:'🤛 Сжимающая',dull:'😶 Тупая'}[a.painType]||a.painType}</span></div>` : ''}
+      ${a.location ? `<div class="modal-detail-row"><span class="modal-detail-key">Локализация</span><span class="modal-detail-val">${{temples:'Виски',forehead:'Лоб',back:'Затылок',full:'Вся голова',top:'Темя',eyelids:'Веки',jaw:'Челюсть'}[a.location]||a.location}${a.side?' · '+({left:'слева',right:'справа',both:'с обеих'}[a.side]||''):''}</span></div>` : ''}
       ${symptoms.length ? `<div class="modal-detail-row"><span class="modal-detail-key">Симптомы</span><span class="modal-detail-val">${symptoms.join(', ')}</span></div>` : ''}
       ${triggers.length ? `<div class="modal-detail-row"><span class="modal-detail-key">Триггеры</span><span class="modal-detail-val">${triggers.join(', ')}</span></div>` : ''}
       ${a.medications?.length ? `<div class="modal-detail-row"><span class="modal-detail-key">Лекарство</span><span class="modal-detail-val">${a.medications.filter(m=>m.name).map(m=>`${m.name}${m.dose?' '+m.dose:''}${m.qty?' ×'+m.qty:''}${m.effectiveness?' ('+m.effectiveness+'/10)':''}`).join(', ')}</span></div>` : ''}
@@ -531,45 +544,57 @@ async function deleteAttackById(id) {
 }
 
 // ─── Demo data ────────────────────────────────────────────────────────────────
-async function loadDemoData() {
-  if (!confirm('Загрузить тестовые данные за 30 дней?')) return;
-  const CHIPS   = ['morning','afternoon','evening','night','ago1','ago3'];
-  const MEDS    = [['Ибупрофен','400мг','1 таб',7],['Суматриптан','50мг','1 таб',9],['Парацетамол','500мг','2 таб',5],['Напроксен','500мг','1 таб',6]];
-  const TRIGS   = ['stress','lessSleep','moreSleep','hunger','weather','noise','screen','alcohol','caffeine'];
-  const SYMPTS  = ['nausea','photophobia','phonophobia','aura','dizziness','menstruation'];
-  const now = new Date();
-  const attackDays = [1,3,5,8,10,11,14,17,19,22,25,27,29];
+// ─── Excel Import ──────────────────────────────────────────────────────────────
+async function handleImportFile(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  e.target.value = ''; // reset so same file can be reselected
 
-  for (const daysAgo of attackDays) {
-    const dt = new Date(now); dt.setDate(now.getDate() - daysAgo);
-    const chip = CHIPS[Math.floor(Math.random()*CHIPS.length)];
-    const computed = computeChipTime(chip) || dt;
-    const intensity = 3 + Math.floor(Math.random() * 7);
-    const med = MEDS[Math.floor(Math.random()*MEDS.length)];
-    const endDt = new Date(computed.getTime() + (1+Math.random()*4)*3600000);
-    const triggers = {}, symptoms = {};
-    TRIGS.slice(0, 2+Math.floor(Math.random()*4)).forEach(t => { if (Math.random()>.4) triggers[t]=true; });
-    SYMPTS.slice(0, 1+Math.floor(Math.random()*3)).forEach(s => { if (Math.random()>.3) symptoms[s]=true; });
+  showToast('⏳ Читаю файл…');
+  try {
+    const attacks = await parseExcelFile(file);
+    if (!attacks.length) { showToast('❌ Приступов в файле не найдено'); return; }
 
-    await addAttack({
-      date:        dt.toISOString().slice(0,10),
-      startTime:   computed.toISOString().slice(0,16),
-      endTime:     endDt.toISOString().slice(0,16),
-      timeChip:    chip,
-      intensity,
-      painType:    ['throbbing','pressing','sharp'][Math.floor(Math.random()*3)],
-      location:    ['temples','forehead','back','full'][Math.floor(Math.random()*4)],
-      side:        ['left','right','both'][Math.floor(Math.random()*3)],
-      symptoms,
-      triggers,
-      medications: [{ name:med[0], dose:med[1], qty:med[2], effectiveness:med[3]+Math.floor(Math.random()*2) }],
-      notes:'',
-    });
+    let imported = 0;
+    for (const a of attacks) {
+      await addAttack(a);
+      imported++;
+    }
+    allAttacks = await getAllAttacks();
+    renderAll();
+    document.getElementById('demoBanner').style.display = 'none';
+    showToast(`✅ Импортировано ${imported} записей`);
+  } catch (err) {
+    console.error('Import error:', err);
+    showToast('❌ Ошибка импорта: ' + err.message);
   }
-  allAttacks = await getAllAttacks();
-  renderAll();
-  document.getElementById('demoBanner').style.display = 'none';
-  showToast('✨ Тестовые данные загружены!');
+}
+
+// ─── Export / Report ──────────────────────────────────────────────────────────
+function openExportModal() {
+  if (!allAttacks.length) { showToast('Нет данных для отчёта'); return; }
+  const report = generateReport(allAttacks);
+  const modal  = document.getElementById('exportModal');
+  const ta     = document.getElementById('exportText');
+  ta.value = report;
+  modal.classList.add('open');
+  document.getElementById('exportOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeExportModal() {
+  document.getElementById('exportModal').classList.remove('open');
+  document.getElementById('exportOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+async function copyReport() {
+  const ta = document.getElementById('exportText');
+  try {
+    await navigator.clipboard.writeText(ta.value);
+    showToast('📋 Скопировано в буфер!');
+  } catch {
+    ta.select(); document.execCommand('copy');
+    showToast('📋 Скопировано!');
+  }
 }
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
@@ -605,7 +630,17 @@ function setupListeners() {
   document.getElementById('modalOverlay').addEventListener('click', closeDayModal);
   document.getElementById('themeToggle').addEventListener('click', toggleTheme);
   document.getElementById('addMedBtn').addEventListener('click', addMedRow);
-  document.getElementById('demoBtn')?.addEventListener('click', loadDemoData);
+
+  // Export button
+  document.getElementById('exportBtn').addEventListener('click', openExportModal);
+  document.getElementById('exportOverlay').addEventListener('click', closeExportModal);
+  document.getElementById('closeExport').addEventListener('click', closeExportModal);
+  document.getElementById('copyReportBtn').addEventListener('click', copyReport);
+
+  // Import — hidden file input triggered by demo banner button
+  const importInput = document.getElementById('importFileInput');
+  document.getElementById('demoBtn')?.addEventListener('click', () => importInput.click());
+  importInput?.addEventListener('change', handleImportFile);
 
   // Calendar nav
   document.getElementById('prevMonth').addEventListener('click', () => {
